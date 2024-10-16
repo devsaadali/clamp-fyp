@@ -6,6 +6,7 @@ import clampLogo from "./../images/clamp.png";
 import "./../styles/ResourcesPage.css";
 import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
+import axios from "axios";
 
 const Resources = ({ resource }) => {
   return (
@@ -13,7 +14,7 @@ const Resources = ({ resource }) => {
       item
       xs={12}
       tablet={6}
-      key={resource.$id}
+      key={resource.id}
       sx={{
         paddingTop: "10px",
         paddingBottom: "10px",
@@ -55,12 +56,12 @@ const Resources = ({ resource }) => {
           />
         </div>
         <Link
-          href={resource.resource_link}
+          href={resource.link}
           className="resource-name-anchor-tag"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {resource.resource_name}
+          {resource.name}
         </Link>
       </Paper>
     </Grid>
@@ -89,48 +90,46 @@ const ResourcesPage = () => {
   const fetchResources = async () => {
     setLoading(true);
     try {
-      const response = await databases.listDocuments(
-        import.meta.env.VITE_DATABASE_ID,
-        import.meta.env.VITE_COLLECTION_ID_RESOURCES
+      // const response = await databases.listDocuments(
+      //   import.meta.env.VITE_DATABASE_ID,
+      //   import.meta.env.VITE_COLLECTION_ID_RESOURCES
+      // );
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/resources/${courseID}`
       );
 
-      let filteredResources = response.documents;
-      filteredResources = filteredResources.filter(
-        (resource) => resource.course_id == courseID
-      );
+      // console.log(response);
 
+      let filteredResources = response.data;
+      // filteredResources = filteredResources.filter(
+      //   (resource) => resource.course_id == courseID
+      // );
       setResources(filteredResources);
-
       const course_outline = filteredResources.filter((resource) => {
         return resource.resource_type === "course-outline";
       });
       setCourseOutlineResources(course_outline);
-
       const past_papers = filteredResources.filter((resource) => {
         return resource.resource_type === "past-papers";
       });
       setPastPapersResources(past_papers);
-
       const assignments = filteredResources.filter((resource) => {
         return resource.resource_type === "assignments";
       });
       setAssignmentsResources(assignments);
-
       const quizzes = filteredResources.filter((resource) => {
         return resource.resource_type === "quizzes";
       });
       setQuizzesResources(quizzes);
-
       const books = filteredResources.filter((resource) => {
         return resource.resource_type === "books";
       });
       setBooksResources(books);
-
       const lab_tasks = filteredResources.filter((resource) => {
         return resource.resource_type === "lab-tasks";
       });
       setLabTasksResources(lab_tasks);
-
       const others = filteredResources.filter((resource) => {
         return resource.resource_type === "others";
       });

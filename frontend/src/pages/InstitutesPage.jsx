@@ -5,32 +5,45 @@ import clampLogo from "./../images/clamp.png";
 import "./../styles/InstitutesPage.css";
 import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
+import axios from "axios";
 
 const InstitutesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [institutes, setInstitutes] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // const filteredInstitutes = institutes.filter(
+  //   (institute) =>
+  //     institute.institute_name
+  //       .toLowerCase()
+  //       .includes(searchTerm.toLowerCase()) ||
+  //     (institute.institute_description &&
+  //       institute.institute_description
+  //         .toLowerCase()
+  //         .includes(searchTerm.toLowerCase()))
+  // );
+
   const filteredInstitutes = institutes.filter(
     (institute) =>
-      institute.institute_name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      (institute.institute_description &&
-        institute.institute_description
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()))
+      institute.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (institute.description &&
+        institute.description.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const fetchInstitutes = async () => {
     setLoading(true);
     try {
-      const response = await databases.listDocuments(
-        import.meta.env.VITE_DATABASE_ID,
-        import.meta.env.VITE_COLLECTION_ID_INSTITUTES
-      );
+      // const response = await databases.listDocuments(
+      //   import.meta.env.VITE_DATABASE_ID,
+      //   import.meta.env.VITE_COLLECTION_ID_INSTITUTES
+      // );
 
-      setInstitutes(response.documents);
+      // setInstitutes(response.documents);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/institutes/`
+      );
+      console.log(response);
+      setInstitutes(response.data);
     } catch (error) {
       console.error("Error fetching institutes: ", error);
     }
@@ -190,7 +203,7 @@ const InstitutesPage = () => {
                           flexWrap: "wrap",
                         }}
                       >
-                        {institute.institute_name}
+                        {institute.name}
                       </Typography>
                     </div>
                   </Grid>
@@ -227,7 +240,7 @@ const InstitutesPage = () => {
                         },
                       }}
                       component={Link}
-                      to={`/courses/${institute.$id}`}
+                      to={`/courses/${institute.id}`}
                     >
                       See Resources
                     </Button>

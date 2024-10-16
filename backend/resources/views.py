@@ -5,8 +5,9 @@ from .models import Resource
 from .serializer import ResourceSerializer
 
 @api_view(['GET'])
-def get_resources(request):
+def get_resources(request, courseID):
     resources = Resource.objects.all()
+    resources = resources.filter(course_id=courseID)
     serializedData = ResourceSerializer(resources, many=True).data
     return Response(serializedData)
 

@@ -2,7 +2,7 @@ from django.db import models
 
 class Resource(models.Model):
     name = models.CharField(max_length=500)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     link = models.TextField()
     course_id = models.IntegerField()
     posted_by = models.IntegerField()

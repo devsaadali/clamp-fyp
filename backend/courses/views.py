@@ -5,8 +5,9 @@ from .models import Course
 from .serializer import CourseSerializer
 
 @api_view(['GET'])
-def get_courses(request):
+def get_courses(request, instituteID):
     courses = Course.objects.all()
+    courses = courses.filter(institute_id=instituteID)
     serializedData = CourseSerializer(courses, many=True).data
     return Response(serializedData)
 

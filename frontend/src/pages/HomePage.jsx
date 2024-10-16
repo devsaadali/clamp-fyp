@@ -4,6 +4,7 @@ import clampLogo from "./../images/clamp.png";
 import { Link } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import StatisticsSection from "../components/StatisticsSection";
+import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   return (
@@ -27,6 +28,7 @@ const HomePage = () => {
           position: "relative",
         }}
       >
+        <Navbar />
         <div
           className="hero-section-content"
           style={{

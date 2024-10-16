@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import clampLogo from "./../images/clamp.png";
 import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
+import axios from "axios";
 
 const CoursesPage = () => {
   const { instituteID } = useParams();
@@ -13,27 +14,32 @@ const CoursesPage = () => {
 
   const filteredCourses = courses.filter(
     (course) =>
-      course.course_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (course.course_description &&
-        course.course_description
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()))
+      course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (course.description &&
+        course.description.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const fetchCourses = async () => {
     setLoading(true);
     try {
-      const response = await databases.listDocuments(
-        import.meta.env.VITE_DATABASE_ID,
-        import.meta.env.VITE_COLLECTION_ID_COURSES
+      // const response = await databases.listDocuments(
+      //   import.meta.env.VITE_DATABASE_ID,
+      //   import.meta.env.VITE_COLLECTION_ID_COURSES
+      // );
+
+      // let preFilteredCourses = response.documents;
+      // preFilteredCourses = preFilteredCourses.filter(
+      //   (course) => course.institute_id == instituteID
+      // );
+
+      // setCourses(preFilteredCourses);
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/courses/${instituteID}`
       );
 
-      let preFilteredCourses = response.documents;
-      preFilteredCourses = preFilteredCourses.filter(
-        (course) => course.institute_id == instituteID
-      );
-
-      setCourses(preFilteredCourses);
+      setCourses(response.data);
+      console.log(response);
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
@@ -132,7 +138,7 @@ const CoursesPage = () => {
                 xs={12}
                 sm={6}
                 md={4}
-                key={course.$id}
+                key={course.id}
                 sx={{
                   paddingLeft: "10px",
                   paddingRight: "10px",
@@ -164,7 +170,7 @@ const CoursesPage = () => {
                       marginBottom: "10px",
                     }}
                   >
-                    {course.course_name}
+                    {course.name}
                   </Typography>
                   <Typography
                     sx={{
@@ -190,7 +196,7 @@ const CoursesPage = () => {
                       },
                     }}
                     component={Link}
-                    to={`/resources/${course.$id}`}
+                    to={`/resources/${course.id}`}
                   >
                     See Resources
                   </Button>
