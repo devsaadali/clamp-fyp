@@ -4,7 +4,6 @@ import { TabPanel, TabContext, TabList } from "@mui/lab/";
 import { useParams } from "react-router-dom";
 import clampLogo from "./../images/clamp.png";
 import "./../styles/ResourcesPage.css";
-import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
 import axios from "axios";
 

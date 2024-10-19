@@ -3,7 +3,6 @@ import { Box, Grid, Paper, Typography, Button, InputBase } from "@mui/material";
 import { Link } from "react-router-dom";
 import clampLogo from "./../images/clamp.png";
 import "./../styles/InstitutesPage.css";
-import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
 import axios from "axios";
 

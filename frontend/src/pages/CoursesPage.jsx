@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Paper, Typography, Button, InputBase } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import clampLogo from "./../images/clamp.png";
-import { databases } from "../appwrite/config";
 import Loader from "../components/Loader";
 import axios from "axios";
 

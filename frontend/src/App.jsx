@@ -9,7 +9,6 @@ import Footer from "./components/Footer";
 import CoursesPage from "./pages/CoursesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import InstitutesPage from "./pages/InstitutesPage";
-import TestPage from "./pages/TestPage.jsx";
 
 function App() {
   return (
