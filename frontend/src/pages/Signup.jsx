@@ -11,13 +11,17 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const UploadPage = () => {
+const Signup = () => {
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [campus, setCampus] = useState("");
   const [file, setFile] = useState(null);
   const [campuses, setCampuses] = useState([]);
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {}, []);
 
@@ -81,16 +85,17 @@ const UploadPage = () => {
           sx={{
             padding: "10px",
             marginTop: "20px",
-            marginBottom: "15px",
+            // marginBottom: "15px",
             fontWeight: "bold",
             fontSize: "35px",
           }}
         >
-          Upload To Clamp
+          Signup
         </Typography>
         <form
           onSubmit={handleSubmit}
           style={{
+            // border: "1px solid red",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -98,104 +103,85 @@ const UploadPage = () => {
             padding: window.innerWidth < 600 ? "0px" : "20px",
           }}
         >
-          <TextField
-            label="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            sx={{
-              marginBottom: "15px",
-              width: "80%",
-              borderRadius: "100px",
-            }}
-          />
-          <TextField
-            label="Subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            required
-            sx={{
-              marginBottom: "15px",
-              width: "80%",
-            }}
-          />
-          <FormControl
-            sx={{
-              marginBottom: "15px",
-              width: "80%",
-            }}
-          >
-            <InputLabel>Campus</InputLabel>
-            <Select
-              value={campus}
-              onChange={(e) => setCampus(e.target.value)}
-              required
-            >
-              {campuses.map((campus) => (
-                <MenuItem key={campus.id} value={campus.id}>
-                  {campus.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <input
-            type="file"
-            onChange={handleFileChange}
+            type="text"
+            aria-label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
-            id="file-input"
-            style={{ display: "none", width: "80%" }}
+            placeholder="Username*"
+            style={{
+              width: "80%",
+              marginBottom: "15px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              height: "55px",
+              paddingTop: "10px",
+              paddingBottom: "10px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+              background: "none",
+              borderRadius: "8px",
+            }}
           />
-          <label
-            className="choose-file"
-            htmlFor="file-input"
-            style={{ width: "80%" }}
-          >
-            <Button
-              variant="outlined"
-              component="span"
-              sx={{
-                marginBottom: "10px",
-                color: "black",
-                borderColor: file ? "rgb(220, 220, 220)" : "black",
-                borderRadius: "5px",
-                height: "45px",
-                width: "100%",
-                ":hover": {
-                  borderColor: file ? "rgb(220, 220, 220)" : "black",
-                },
-              }}
-            >
-              {file ? (
-                <Typography variant="body2" sx={{}}>
-                  {file.name}
-                </Typography>
-              ) : (
-                "Choose File"
-              )}
-            </Button>
-          </label>
+          <input
+            type="password"
+            aria-label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder="Password*"
+            style={{
+              width: "80%",
+              marginBottom: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              height: "55px",
+              paddingTop: "10px",
+              paddingBottom: "10px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+              background: "none",
+              borderRadius: "8px",
+            }}
+          />
           <Button
             type="submit"
             variant="contained"
             sx={{
               marginBottom: "15px",
-              marginTop: "20px",
+              marginTop: "10px",
               width: "80%",
               height: "50px",
               padding: "10px",
               backgroundColor: "black",
               borderRadius: "12px",
+              fontSize: "18px",
               ":hover": {
                 backgroundColor: "black",
               },
             }}
           >
-            Upload
+            Signup
           </Button>
+          <Typography
+            sx={{
+              fontSize: "14px",
+            }}
+          >
+            Already have an account?{" "}
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              Login
+            </Link>
+          </Typography>
         </form>
       </Paper>
     </Box>
   );
 };
 
-export default UploadPage;
+export default Signup;

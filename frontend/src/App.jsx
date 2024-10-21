@@ -9,6 +9,8 @@ import Footer from "./components/Footer";
 import CoursesPage from "./pages/CoursesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import InstitutesPage from "./pages/InstitutesPage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/institutes" element={<InstitutesPage />} />
           <Route path="/courses/:instituteID" element={<CoursesPage />} />

@@ -242,7 +242,7 @@ const Navbar = () => {
                   }}
                   color="inherit"
                   component={Link}
-                  to="/about"
+                  to="/login"
                 >
                   Login
                 </Button>
@@ -266,7 +266,7 @@ const Navbar = () => {
                   }}
                   variant="outlined"
                   component={Link}
-                  to="/contact"
+                  to="/signup"
                 >
                   Signup
                 </Button>
