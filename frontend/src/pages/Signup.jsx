@@ -10,8 +10,11 @@ import {
   FormControl,
   Paper,
   Typography,
+  Alert,
+  IconButton,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Signup = () => {
   const [title, setTitle] = useState("");
@@ -22,21 +25,49 @@ const Signup = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [custom_alert, setCustomAlert] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {}, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("subject", subject);
-    formData.append("campus", campus);
-    formData.append("file", file);
+    setLoading(true);
+    setError(null);
+
+    const formData = {
+      email: username,
+      password: password,
+      password2: password,
+    };
 
     axios
-      .post("/api/pastpapers/", formData)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.error("There was an error!", error));
+      .post(`${import.meta.env.VITE_BACKEND_URL}/auth/register/`, formData)
+      .then((response) => {
+        setError("Successfully registered");
+        setCustomAlert(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      })
+      .catch((error) => {
+        if (error.response.data.email) {
+          let email_error = error.response.data.email;
+          email_error = email_error.map((email) =>
+            email.replace("custom ", "")
+          );
+          setError(email_error);
+          setCustomAlert(true);
+        } else if (error.response.data.password) {
+          setError(error.response.data.password);
+          setCustomAlert(true);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleFileChange = (event) => {
@@ -63,6 +94,37 @@ const Signup = () => {
         },
       }}
     >
+      {custom_alert && (
+        <Alert
+          icon={false}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            backgroundColor: "black",
+            color: "white",
+            position: "fixed",
+            top: "70px",
+            right: "2%",
+            zIndex: "9999",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {error}{" "}
+            <button
+              style={{
+                background: "transparent",
+                color: "white",
+                paddingLeft: "20px",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => setCustomAlert(false)}
+            >
+              X
+            </button>
+          </Box>
+        </Alert>
+      )}
       <Paper
         sx={{
           width: {
@@ -114,7 +176,6 @@ const Signup = () => {
               width: "80%",
               marginBottom: "15px",
               border: "1px solid #ccc",
-              borderRadius: "5px",
               boxSizing: "border-box",
               fontSize: "16px",
               height: "55px",
@@ -137,7 +198,6 @@ const Signup = () => {
               width: "80%",
               marginBottom: "20px",
               border: "1px solid #ccc",
-              borderRadius: "5px",
               boxSizing: "border-box",
               fontSize: "16px",
               height: "55px",
@@ -152,6 +212,7 @@ const Signup = () => {
           <Button
             type="submit"
             variant="contained"
+            disabled={loading}
             sx={{
               marginBottom: "15px",
               marginTop: "10px",
@@ -166,8 +227,13 @@ const Signup = () => {
               },
             }}
           >
-            Signup
+            {loading ? "Signing Up..." : "Signup"}
           </Button>
+          {/* {error && (
+            <Typography color="error">
+              {error.detail || "An error occurred."}
+            </Typography>
+          )} */}
           <Typography
             sx={{
               fontSize: "14px",
