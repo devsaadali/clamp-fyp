@@ -7,7 +7,7 @@ env/
 
 .env
 
-frontend/.env
+# frontend/.env
 
 
 # Logs
