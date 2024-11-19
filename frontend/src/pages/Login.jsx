@@ -10,8 +10,9 @@ import {
   FormControl,
   Paper,
   Typography,
+  Alert,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [title, setTitle] = useState("");
@@ -23,20 +24,48 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [custom_alert, setCustomAlert] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {}, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("subject", subject);
-    formData.append("campus", campus);
-    formData.append("file", file);
+    setLoading(true);
+    setError(null);
+
+    const formData = {
+      email: username,
+      password: password,
+    };
 
     axios
-      .post("/api/pastpapers/", formData)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.error("There was an error!", error));
+      .post(`${import.meta.env.VITE_BACKEND_URL}/auth/login/`, formData)
+      .then((response) => {
+        localStorage.setItem("access_token", response.data.access);
+        localStorage.setItem("refresh_token", response.data.refresh);
+
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        setError("Successfully logged in");
+        setCustomAlert(true);
+        setTimeout(() => {
+          navigate("/institutes");
+        }, 1500);
+      })
+      .catch((error) => {
+        if (error.response?.data?.detail) {
+          setError(error.response.data.detail);
+        } else {
+          setError("Invalid email or password");
+        }
+        setCustomAlert(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleFileChange = (event) => {
@@ -63,6 +92,37 @@ const Login = () => {
         },
       }}
     >
+      {custom_alert && (
+        <Alert
+          icon={false}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            backgroundColor: "black",
+            color: "white",
+            position: "fixed",
+            top: "70px",
+            right: "2%",
+            zIndex: "9999",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {error}{" "}
+            <button
+              style={{
+                background: "transparent",
+                color: "white",
+                paddingLeft: "20px",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => setCustomAlert(false)}
+            >
+              X
+            </button>
+          </Box>
+        </Alert>
+      )}
       <Paper
         sx={{
           width: {
@@ -152,6 +212,7 @@ const Login = () => {
           <Button
             type="submit"
             variant="contained"
+            disabled={loading}
             sx={{
               marginBottom: "15px",
               marginTop: "10px",
@@ -166,7 +227,7 @@ const Login = () => {
               },
             }}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </Button>
           <Typography
             sx={{
