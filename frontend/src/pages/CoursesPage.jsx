@@ -21,18 +21,6 @@ const CoursesPage = () => {
   const fetchCourses = async () => {
     setLoading(true);
     try {
-      // const response = await databases.listDocuments(
-      //   import.meta.env.VITE_DATABASE_ID,
-      //   import.meta.env.VITE_COLLECTION_ID_COURSES
-      // );
-
-      // let preFilteredCourses = response.documents;
-      // preFilteredCourses = preFilteredCourses.filter(
-      //   (course) => course.institute_id == instituteID
-      // );
-
-      // setCourses(preFilteredCourses);
-
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/courses/${instituteID}`
       );
@@ -53,7 +41,6 @@ const CoursesPage = () => {
     <div
       className="courses-page-container"
       style={{
-        // minHeight: "100vh",
         minHeight: "100dvh",
         paddingLeft: "6%",
         paddingRight: "6%",
@@ -90,7 +77,6 @@ const CoursesPage = () => {
           sx={{
             display: "flex",
             height: "55px",
-            // width: window.innerWidth < 600 ? "100%" : "",
             width: {
               xs: "90%",
               sm: "80%",
@@ -178,7 +164,7 @@ const CoursesPage = () => {
                       marginBottom: "10px",
                     }}
                   >
-                    Course Code: AI2002
+                    Course Code: {course.code}
                   </Typography>
                   <Button
                     variant="outlined"
