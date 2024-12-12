@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [campus, setCampus] = useState("");
@@ -54,6 +54,7 @@ const Login = () => {
         setTimeout(() => {
           navigate("/institutes");
         }, 1500);
+        setIsLoggedIn(true);
       })
       .catch((error) => {
         if (error.response?.data?.detail) {

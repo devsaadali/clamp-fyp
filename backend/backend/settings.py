@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'favorites',
     'authentication',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [

@@ -5,14 +5,14 @@ import App from "./App.jsx";
 import "./styles/index.css";
 import { ThemeProvider } from "@mui/material";
 import theme from "./Theme";
+import Wrapper from "./Wrapper.jsx";
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
-  //   <App />
-  // </StrictMode>,
   <StrictMode>
     <ThemeProvider theme={theme}>
+      {/* <Wrapper> */}
       <App />
+      {/* </Wrapper> */}
     </ThemeProvider>
   </StrictMode>
 );

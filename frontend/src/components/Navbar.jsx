@@ -9,15 +9,20 @@ import {
   ListItem,
   ListItemText,
   Box,
+  Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import "./../styles/Navbar.css";
+import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 770);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const [custom_alert, setCustomAlert] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,6 +34,35 @@ const Navbar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleLogout = () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/logout/`,
+        { refresh: refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then(() => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
+
+        setError("Successfully logged Out");
+        setCustomAlert(true);
+        setIsLoggedIn(false);
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+        setError("Error logging out");
+        setCustomAlert(true);
+      });
+  };
 
   const drawer = (
     <Box
@@ -176,6 +210,37 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              {custom_alert && (
+                <Alert
+                  icon={false}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    backgroundColor: "black",
+                    color: "white",
+                    position: "fixed",
+                    top: "70px",
+                    right: "2%",
+                    zIndex: "9999",
+                  }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {error}{" "}
+                    <button
+                      style={{
+                        background: "transparent",
+                        color: "white",
+                        paddingLeft: "20px",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setCustomAlert(false)}
+                    >
+                      X
+                    </button>
+                  </Box>
+                </Alert>
+              )}
               <Box
                 className="navbar-links"
                 sx={{
@@ -234,42 +299,58 @@ const Navbar = () => {
                   color: "#030303",
                 }}
               >
-                <Button
-                  className="navbar-link"
-                  sx={{
-                    fontFamily: "inter",
-                    ":hover": { color: "black", background: "none" },
-                  }}
-                  color="inherit"
-                  component={Link}
-                  to="/login"
-                >
-                  Login
-                </Button>
-                <Button
-                  className="navbar-signup"
-                  sx={{
-                    color: "black",
-                    border: "2px solid black",
-                    fontFamily: "inter",
-                    width: "80px",
-                    outline: "none",
-                    borderRadius: "8px",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    height: "40px",
-                    boxShadow: "none",
-                    ":hover": {
-                      color: "white",
-                      background: "black",
-                    },
-                  }}
-                  variant="outlined"
-                  component={Link}
-                  to="/signup"
-                >
-                  Signup
-                </Button>
+                {!isLoggedIn ? (
+                  <>
+                    <Button
+                      className="navbar-link"
+                      sx={{
+                        fontFamily: "inter",
+                        ":hover": { color: "black", background: "none" },
+                      }}
+                      color="inherit"
+                      component={Link}
+                      to="/login"
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      className="navbar-signup"
+                      sx={{
+                        color: "black",
+                        border: "2px solid black",
+                        fontFamily: "inter",
+                        width: "80px",
+                        outline: "none",
+                        borderRadius: "8px",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        height: "40px",
+                        boxShadow: "none",
+                        ":hover": {
+                          color: "white",
+                          background: "black",
+                        },
+                      }}
+                      variant="outlined"
+                      component={Link}
+                      to="/signup"
+                    >
+                      Signup
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="navbar-link"
+                    sx={{
+                      fontFamily: "inter",
+                      ":hover": { color: "black", background: "none" },
+                    }}
+                    color="inherit"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                )}
               </Box>
             </>
           )}

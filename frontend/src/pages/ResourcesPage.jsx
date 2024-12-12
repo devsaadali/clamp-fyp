@@ -89,21 +89,11 @@ const ResourcesPage = () => {
   const fetchResources = async () => {
     setLoading(true);
     try {
-      // const response = await databases.listDocuments(
-      //   import.meta.env.VITE_DATABASE_ID,
-      //   import.meta.env.VITE_COLLECTION_ID_RESOURCES
-      // );
-
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/resources/${courseID}`
       );
 
-      // console.log(response);
-
       let filteredResources = response.data;
-      // filteredResources = filteredResources.filter(
-      //   (resource) => resource.course_id == courseID
-      // );
       setResources(filteredResources);
       const course_outline = filteredResources.filter((resource) => {
         return resource.resource_type === "course-outline";
