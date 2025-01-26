@@ -3,10 +3,10 @@ import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const WrapperComponent = ({ children }) => {
-  const { accessToken } = useSelector((state) => state.auth);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // Check if the user is authenticated (you can customize this based on your logic)
-  if (!accessToken) {
+  if (!user) {
     return <Navigate to="/login" replace />; // Redirect to login if not authenticated
   }
 

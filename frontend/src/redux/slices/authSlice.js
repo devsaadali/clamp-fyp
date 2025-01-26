@@ -52,6 +52,10 @@ const authSlice = createSlice({
       state.accessToken = action.payload.access;
       state.refreshToken = action.payload.refresh;
 
+      localStorage.setItem("user", JSON.stringify(state.user));
+      localStorage.setItem("accessToken", state.accessToken);
+      localStorage.setItem("refreshToken", state.refreshToken);
+
       //   localStorage.setItem("auth", JSON.stringify(action.payload)); // Store tokens in localStorage
     },
     // refreshToken: (state, action) => {
@@ -67,6 +71,11 @@ const authSlice = createSlice({
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
       //   localStorage.removeItem("auth"); // Clear tokens from localStorage
     },
   },
@@ -96,6 +105,8 @@ const authSlice = createSlice({
       // Handle refresh token
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.access;
+
+        localStorage.setItem("accessToken", action.payload.access);
         // const auth = JSON.parse(localStorage.getItem("auth"));
         // auth.access = action.payload.access;
         // localStorage.setItem("auth", JSON.stringify(auth));

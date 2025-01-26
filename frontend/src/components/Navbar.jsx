@@ -29,9 +29,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const dispatch = useDispatch();
 
-  const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state) => state.auth);
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  console.log(auth);
+  // console.log(auth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,10 +60,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       }
     )
       .then(() => {
-        // localStorage.removeItem("access_token");
-        // localStorage.removeItem("refresh_token");
-        // localStorage.removeItem("user");
-
         dispatch(logout());
 
         setError("Successfully logged Out");
@@ -311,7 +308,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   color: "#030303",
                 }}
               >
-                {!auth.user ? (
+                {!user ? (
                   <>
                     <Button
                       className="navbar-link"
