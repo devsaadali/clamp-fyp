@@ -16,6 +16,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import "./../styles/Navbar.css";
 import axios from "axios";
+import { logout } from "../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import AxiosCall from "../axios/AxiosCall";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 770);
@@ -23,6 +26,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const [custom_alert, setCustomAlert] = useState(false);
   const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const auth = useSelector((state) => state.auth);
+
+  console.log(auth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,27 +44,30 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     };
   }, []);
 
-  const handleLogout = () => {
-    const refreshToken = localStorage.getItem("refresh_token");
+  const handleLogout = async () => {
+    // const refreshToken = localStorage.getItem("refresh_token");
+    const accessToken = auth.accessToken;
+    const refreshToken = auth.refreshToken;
 
-    axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/logout/`,
-        { refresh: refreshToken },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      )
+    await AxiosCall.post(
+      `${import.meta.env.VITE_BACKEND_URL}/auth/logout/`,
+      { refresh: refreshToken },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
       .then(() => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("user");
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("refresh_token");
+        // localStorage.removeItem("user");
+
+        dispatch(logout());
 
         setError("Successfully logged Out");
         setCustomAlert(true);
-        setIsLoggedIn(false);
+        // setIsLoggedIn(false);
       })
       .catch((error) => {
         console.error("Logout failed:", error);
@@ -299,7 +311,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   color: "#030303",
                 }}
               >
-                {!isLoggedIn ? (
+                {!auth.user ? (
                   <>
                     <Button
                       className="navbar-link"

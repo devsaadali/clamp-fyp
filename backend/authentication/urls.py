@@ -5,7 +5,7 @@ from .views import register_user, user_view, custom_token_obtain_pair, logout_vi
 urlpatterns = [
     path('register/', register_user, name='register'),
     path('login/', custom_token_obtain_pair, name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user/', user_view, name='user'),
     path('logout/', logout_view, name='logout'),
 ]

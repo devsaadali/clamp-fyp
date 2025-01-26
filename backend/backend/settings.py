@@ -145,8 +145,8 @@ REST_FRAMEWORK = {
 
 # Simple JWT settings
 SIMPLE_JWT = {
-    # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),  # Set access token validity to 15 minutes
-    # 'REFRESH_TOKEN_LIFETIME': timedelta(minutes=1),      # Set refresh token validity to 1 day
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),  # Set access token validity to 15 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=60),      # Set refresh token validity to 1 day
     # You can add other settings here as needed
 }
 

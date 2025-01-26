@@ -13,13 +13,15 @@ import {
   Alert,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/slices/authSlice";
 
 const Login = ({ setIsLoggedIn }) => {
-  const [title, setTitle] = useState("");
-  const [subject, setSubject] = useState("");
-  const [campus, setCampus] = useState("");
-  const [file, setFile] = useState(null);
-  const [campuses, setCampuses] = useState([]);
+  // const [title, setTitle] = useState("");
+  // const [subject, setSubject] = useState("");
+  // const [campus, setCampus] = useState("");
+  // const [file, setFile] = useState(null);
+  // const [campuses, setCampuses] = useState([]);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,9 @@ const Login = ({ setIsLoggedIn }) => {
   const [loading, setLoading] = useState(false);
   const [custom_alert, setCustomAlert] = useState(false);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {}, []);
 
@@ -44,21 +49,40 @@ const Login = ({ setIsLoggedIn }) => {
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/auth/login/`, formData)
       .then((response) => {
-        localStorage.setItem("access_token", response.data.access);
-        localStorage.setItem("refresh_token", response.data.refresh);
+        // localStorage.setItem("access_token", response.data.access);
+        // localStorage.setItem("refresh_token", response.data.refresh);
 
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        // localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        console.log("BEFORE DISPATCHING");
+
+        dispatch(
+          login({
+            access: response.data.access,
+            refresh: response.data.refresh,
+            user: JSON.stringify(response.data.user),
+          })
+        );
+
+        console.log("AFTER DISPATCHING");
+
+        // setTimeout(() => {
+        //   navigate("/institutes");
+        // }, 150000000);
+
+        // console.log("Access Token:", auth.accessToken);
+        // console.log("Refresh Token:", auth.refreshToken);
 
         setError("Successfully logged in");
         setCustomAlert(true);
         setTimeout(() => {
           navigate("/institutes");
         }, 1500);
-        setIsLoggedIn(true);
+        // setIsLoggedIn(true);
       })
-      .catch((error) => {
-        if (error.response?.data?.detail) {
-          setError(error.response.data.detail);
+      .catch((err) => {
+        if (err.response?.data?.detail) {
+          setError(err.response.data.detail);
         } else {
           setError("Invalid email or password");
         }
@@ -69,9 +93,9 @@ const Login = ({ setIsLoggedIn }) => {
       });
   };
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
+  // const handleFileChange = (event) => {
+  //   setFile(event.target.files[0]);
+  // };
 
   return (
     <Box

@@ -4,12 +4,18 @@ import { Link } from "react-router-dom";
 import clampLogo from "./../images/clamp.png";
 import "./../styles/InstitutesPage.css";
 import Loader from "../components/Loader";
+import Navbar from "../components/Navbar";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 const InstitutesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [institutes, setInstitutes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const auth = useSelector((state) => state.auth);
+
+  console.log(auth);
 
   // const filteredInstitutes = institutes.filter(
   //   (institute) =>
@@ -66,6 +72,7 @@ const InstitutesPage = () => {
         backgroundColor: "#EDEDED",
       }}
     >
+      <Navbar />
       <div
         className="institutes-page-content"
         style={{

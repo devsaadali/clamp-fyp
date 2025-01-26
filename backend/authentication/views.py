@@ -22,6 +22,10 @@ def register_user(request):
 @api_view(['GET', 'PUT', 'PATCH'])
 @permission_classes([permissions.IsAuthenticated])
 def user_view(request):
+    if request.method == 'DELETE':
+        user = request.user
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     user = request.user
     if request.method == 'GET':
         serializer = UserSerializer(user)
@@ -42,7 +46,8 @@ def custom_token_obtain_pair(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
+# @permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def logout_view(request):
     serializer = LogoutSerializer(data=request.data)
     if serializer.is_valid():
