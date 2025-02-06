@@ -4,6 +4,7 @@ import clampLogo from "./../images/clamp.png";
 import { Link } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import StatisticsSection from "../components/StatisticsSection";
+import ResourcesSection from "../components/ResourcesSection";
 import Navbar from "../components/Navbar";
 
 const HomePage = () => {
@@ -83,6 +84,7 @@ const HomePage = () => {
         </Button>
       </div>
       <StatisticsSection />
+      <ResourcesSection />
     </div>
   );
 };
