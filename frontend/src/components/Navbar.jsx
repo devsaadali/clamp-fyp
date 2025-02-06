@@ -32,7 +32,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   // const auth = useSelector((state) => state.auth);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // console.log(auth);
+  console.log(user);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,8 +47,8 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleLogout = async () => {
     // const refreshToken = localStorage.getItem("refresh_token");
-    const accessToken = auth.accessToken;
-    const refreshToken = auth.refreshToken;
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
 
     await AxiosCall.post(
       `${import.meta.env.VITE_BACKEND_URL}/auth/logout/`,
