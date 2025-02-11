@@ -10,6 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path='../.env')  # Load .env file
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,9 +88,9 @@ WSGI_APPLICATION = 'auth_service.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myappdb',
-        'USER': 'myappuser',
-        'PASSWORD': 'strongpassword',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
         # 'HOST': 'your-server-ip',  # or 'localhost' if on the same machine
         'HOST': 'localhost',  # or 'localhost' if on the same machine
         'PORT': '5432',
