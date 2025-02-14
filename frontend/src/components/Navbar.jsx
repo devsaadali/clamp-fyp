@@ -51,7 +51,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     const refreshToken = localStorage.getItem("refreshToken");
 
     await AxiosCall.post(
-      `${import.meta.env.VITE_BACKEND_URL}/auth/logout/`,
+      `${import.meta.env.VITE_AUTH_SERVICE_URL}/auth/logout/`,
       { refresh: refreshToken },
       {
         headers: {

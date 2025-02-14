@@ -2,9 +2,10 @@ import axios from "axios";
 import { store } from "../redux/store";
 import { refreshAccessToken, logout } from "../redux/slices/authSlice";
 
-const AxiosCall = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
-});
+// const AxiosCall = axios.create({
+//   baseURL: import.meta.env.AUTH_SERVICE_URL,
+// });
+const AxiosCall = axios.create();
 
 // Request interceptor to add access token
 AxiosCall.interceptors.request.use((config) => {

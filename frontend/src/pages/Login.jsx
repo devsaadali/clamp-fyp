@@ -47,7 +47,8 @@ const Login = ({ setIsLoggedIn }) => {
     };
 
     axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/auth/login/`, formData)
+      // .post(`${import.meta.env.VITE_BACKEND_URL}/auth/login/`, formData)
+      .post(`${import.meta.env.VITE_AUTH_SERVICE_URL}/auth/login/`, formData)
       .then((response) => {
         // localStorage.setItem("access_token", response.data.access);
         // localStorage.setItem("refresh_token", response.data.refresh);

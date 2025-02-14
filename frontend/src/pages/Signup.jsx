@@ -44,7 +44,8 @@ const Signup = () => {
     };
 
     axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/auth/register/`, formData)
+      // .post(`${import.meta.env.VITE_BACKEND_URL}/auth/register/`, formData)
+      .post(`${import.meta.env.VITE_AUTH_SERVICE_URL}/auth/register/`, formData)
       .then((response) => {
         setError("Successfully registered");
         setCustomAlert(true);
