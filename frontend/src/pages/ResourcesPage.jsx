@@ -90,7 +90,7 @@ const ResourcesPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/resources/${courseID}`
+        `${import.meta.env.VITE_RESOURCES_SERVICE_URL}/resources/${courseID}`
       );
 
       let filteredResources = response.data;
