@@ -22,11 +22,11 @@ const CoursesPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/courses/${instituteID}`
+        `${import.meta.env.VITE_COURSES_SERVICE_URL}/courses/${instituteID}`
       );
 
       setCourses(response.data);
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
