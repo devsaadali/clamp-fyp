@@ -32,7 +32,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   // const auth = useSelector((state) => state.auth);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     const handleResize = () => {

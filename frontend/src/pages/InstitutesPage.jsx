@@ -15,7 +15,7 @@ const InstitutesPage = () => {
 
   const auth = useSelector((state) => state.auth);
 
-  console.log(auth);
+  // console.log(auth);
 
   // const filteredInstitutes = institutes.filter(
   //   (institute) =>
@@ -45,7 +45,7 @@ const InstitutesPage = () => {
 
       // setInstitutes(response.documents);
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/institutes/`
+        `${import.meta.env.VITE_INSTITUTES_SERVICE_URL}/institutes/`
       );
       console.log(response);
       setInstitutes(response.data);
