@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
@@ -12,8 +12,28 @@ import InstitutesPage from "./pages/InstitutesPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import WrapperComponent from "./components/Wrapper.jsx";
+import { useDispatch } from "react-redux";
+
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (user && accessToken && refreshToken) {
+      dispatch({
+        type: 'auth/login',
+        payload: {
+          user: JSON.parse(user),
+          accessToken,
+          refreshToken
+        }
+      });
+    }
+  }, [dispatch]);
   return (
     <div
       className="App"

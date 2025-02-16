@@ -29,10 +29,8 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const dispatch = useDispatch();
 
-  // const auth = useSelector((state) => state.auth);
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  // console.log(user);
+  const auth = useSelector((state) => state.auth);
+  const isAuthenticated = auth.accessToken !== null;
 
   useEffect(() => {
     const handleResize = () => {
@@ -308,7 +306,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   color: "#030303",
                 }}
               >
-                {!user ? (
+                {!isAuthenticated ? (
                   <>
                     <Button
                       className="navbar-link"
