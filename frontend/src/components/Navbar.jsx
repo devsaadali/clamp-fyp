@@ -349,9 +349,22 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   <Button
                     className="navbar-link"
                     sx={{
+                      color: "black",
+                      border: "2px solid black",
                       fontFamily: "inter",
-                      ":hover": { color: "black", background: "none" },
+                      width: "80px",
+                      outline: "none",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      height: "40px",
+                      boxShadow: "none",
+                      ":hover": {
+                        color: "white",
+                        background: "black",
+                      },
                     }}
+                    // variant="outlined"
                     color="inherit"
                     onClick={handleLogout}
                   >
