@@ -72,7 +72,7 @@ const InstitutesPage = () => {
         backgroundColor: "#EDEDED",
       }}
     >
-      <Navbar />
+      {/* <Navbar /> */}
       <div
         className="institutes-page-content"
         style={{
