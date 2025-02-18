@@ -1,0 +1,107 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  auth_service:
+    image: auth_service
+    container_name: auth_service
+    build: 
+      context: ./auth_service
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    env_file:
+      - .env  # Provides database credentials to Django settings
+
+  institutes_service:
+    image: institutes_service
+    container_name: institutes_service
+    build:
+      context: ./institutes_service
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"  # Expose port 8001 to the host
+
+  courses_service:
+    image: courses_service
+    container_name: courses_service
+    build:
+      context: ./courses_service
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    env_file:
+      - .env
+
+  resources_service:
+    image: resources_service
+    container_name: resources_service
+    build:
+      context: ./resources_service
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    env_file:
+      - .env
+
+  frontend:
+    image: frontend
+    container_name: frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth_service
+      - institutes_service
+      - courses_service
+      - resources_service
+    networks:
+      - app_network
+    env_file:
+      - ./frontend/.env  # Loads frontend environment variables
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

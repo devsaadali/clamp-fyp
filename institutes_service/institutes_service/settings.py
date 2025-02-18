@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-@fn9x*zc&ti^l=&za1-867@(sagfko#lqm6&k)+k63_@3rr!d6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -91,15 +91,26 @@ WSGI_APPLICATION = 'institutes_service.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv("DB_NAME"),
+#         'USER': os.getenv("DB_USER"),
+#         'PASSWORD': os.getenv("DB_PASSWORD"),
+#         # 'HOST': 'your-server-ip',  # or 'localhost' if on the same machine
+#         'HOST': 'db',  # or 'localhost' if on the same machine
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        # 'HOST': 'your-server-ip',  # or 'localhost' if on the same machine
-        'HOST': 'localhost',  # or 'localhost' if on the same machine
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -149,12 +160,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add this setting to use CustomUser model
 # AUTH_USER_MODEL = 'authentication.CustomUser'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React default port
-    "http://127.0.0.1:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # React default port
+#     "http://127.0.0.1:3000",
+# ]
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

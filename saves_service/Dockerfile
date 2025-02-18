@@ -13,11 +13,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the Django project into the container
 COPY . .
 
+# # Copy .env.db file into the container (so Django can use it)
+# COPY ../.env.db .env
+
 # Expose port 8006 for Django
-EXPOSE 8006
+EXPOSE 8005
 
 # Set environment variables (modify as needed)
-# ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1
 
 # Run Django migrations and start the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8006", "saves_service.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8005", "saves_service.wsgi:application"]
