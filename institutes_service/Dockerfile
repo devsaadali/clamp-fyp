@@ -23,4 +23,5 @@ EXPOSE 8001
 ENV PYTHONUNBUFFERED=1
 
 # Run Django migrations and start the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8001", "institutes_service.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8001", "institutes_service.wsgi:application"]
+CMD ["sh", "-c", "python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --bind 0.0.0.0:8001 institutes_service.wsgi:application"]

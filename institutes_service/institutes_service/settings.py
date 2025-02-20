@@ -32,6 +32,13 @@ SECRET_KEY = 'django-insecure-@fn9x*zc&ti^l=&za1-867@(sagfko#lqm6&k)+k63_@3rr!d6
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "172.19.0.6",  # Add the IP of the backend
+    "institutes_service",  # Add the Docker service name
+]
+
 
 
 # Application definition
@@ -109,7 +116,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgres_db'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }

@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  db:
+  postgres_db:
     image: postgres:15
     container_name: postgres_db
     restart: always
@@ -15,8 +15,8 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
@@ -30,10 +30,10 @@ services:
       context: ./auth_service
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres_db:
         condition: service_healthy
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     env_file:
       - .env  # Provides database credentials to Django settings
 
@@ -44,10 +44,10 @@ services:
       context: ./institutes_service
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres_db:
         condition: service_healthy
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     env_file:
       - .env
     ports:
@@ -60,10 +60,10 @@ services:
       context: ./courses_service
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres_db:
         condition: service_healthy
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     env_file:
       - .env
 
@@ -74,10 +74,10 @@ services:
       context: ./resources_service
       dockerfile: Dockerfile
     depends_on:
-      db:
+      postgres_db:
         condition: service_healthy
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     env_file:
       - .env
 
@@ -94,14 +94,14 @@ services:
       - institutes_service
       - courses_service
       - resources_service
-    networks:
-      - app_network
+    # networks:
+    #   - app_network
     env_file:
       - ./frontend/.env  # Loads frontend environment variables
 
-networks:
-  app_network:
-    driver: bridge
+# networks:
+#   app_network:
+#     driver: bridge
 
 volumes:
   postgres_data:
