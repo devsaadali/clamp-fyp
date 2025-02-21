@@ -14,6 +14,8 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
+
+
 load_dotenv(dotenv_path='../.env')  # Load .env file
 
 from pathlib import Path
@@ -31,15 +33,32 @@ SECRET_KEY = 'django-insecure-@fn9x*zc&ti^l=&za1-867@(sagfko#lqm6&k)+k63_@3rr!d6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+USE_X_FORWARDED_HOST = True
+
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "172.19.0.6",  # Add the IP of the backend
-    "institutes_service",  # Add the Docker service name
-    "0.0.0.0",
-    "frontend",  # Add the Docker service name
-]
+# ALLOWED_HOSTS = ["*", "institutes_service", "localhost", "127.0.0.1"]
+
+import os
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",  
+#     "172.19.0.1",  # Add the IP of the backend
+#     "172.19.0.2",  # Add the IP of the backend
+#     "172.19.0.3",  # Add the IP of the backend
+#     "172.19.0.4",  # Add the IP of the backend
+#     "172.19.0.5",  # Add the IP of the backend
+#     "172.19.0.6",  # Add the IP of the backend
+#     "172.19.0.7",  # Add the IP of the backend
+#     "172.19.0.8",  # Add the IP of the backend
+#     "172.19.0.9",  # Add the IP of the backend
+#     "172.19.0.10",  # Add the IP of the backend
+#     "institutes_service",  # Add the Docker service name
+#     "institutes_service:8001",  # Add the Docker service name
+#     "0.0.0.0",
+#     "frontend",  # Add the Docker service name
+# ]
 # ALLOWED_HOSTS = ["institutes_service", "localhost", "127.0.0.1", "0.0.0.0"]
 
 
@@ -70,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "institutes.middleware.AllowDockerInternalHostMiddleware",
+    "institutes.middleware.custom_disallowed_host_middleware",
 ]
 
 ROOT_URLCONF = 'institutes_service.urls'
@@ -191,3 +211,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(minutes=60),      # Set refresh token validity to 1 day
     # You can add other settings here as needed
 }
+
+

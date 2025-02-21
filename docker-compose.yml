@@ -37,12 +37,15 @@ services:
     env_file:
       - .env  # Provides database credentials to Django settings
 
-  institutes_service:
-    image: institutes_service
-    container_name: institutes_service
+  institutes-service:
+    image: institutes-service
+    container_name: institutes-service
     build:
       context: ./institutes_service
       dockerfile: Dockerfile
+    environment:
+      - DJANGO_SETTINGS_MODULE=institutes_service.settings
+      - DJANGO_ALLOWED_HOSTS=institutes-service,localhost,127.0.0.1
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -91,7 +94,7 @@ services:
       - "3000:3000"
     depends_on:
       - auth_service
-      - institutes_service
+      - institutes-service
       - courses_service
       - resources_service
     # networks:
