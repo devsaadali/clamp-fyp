@@ -31,13 +31,17 @@ SECRET_KEY = 'django-insecure-@fn9x*zc&ti^l=&za1-867@(sagfko#lqm6&k)+k63_@3rr!d6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "172.19.0.6",  # Add the IP of the backend
     "institutes_service",  # Add the Docker service name
+    "0.0.0.0",
+    "frontend",  # Add the Docker service name
 ]
+# ALLOWED_HOSTS = ["institutes_service", "localhost", "127.0.0.1", "0.0.0.0"]
+
 
 
 
@@ -65,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "institutes.middleware.AllowDockerInternalHostMiddleware",
 ]
 
 ROOT_URLCONF = 'institutes_service.urls'
@@ -105,7 +110,7 @@ WSGI_APPLICATION = 'institutes_service.wsgi.application'
 #         'USER': os.getenv("DB_USER"),
 #         'PASSWORD': os.getenv("DB_PASSWORD"),
 #         # 'HOST': 'your-server-ip',  # or 'localhost' if on the same machine
-#         'HOST': 'db',  # or 'localhost' if on the same machine
+#         'HOST': 'localhost',  # or 'localhost' if on the same machine
 #         'PORT': '5432',
 #     }
 # }
