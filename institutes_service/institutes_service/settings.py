@@ -35,11 +35,11 @@ DEBUG = True
 
 USE_X_FORWARDED_HOST = True
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ["*", "institutes_service", "localhost", "127.0.0.1"]
 
 import os
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+# ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 # ALLOWED_HOSTS = [
 #     "127.0.0.1",
